@@ -347,30 +347,37 @@ $('#book-form').on('submit', (e) => {
   }
 
   const file = files[0]; // 表紙画像ファイル
-  const filename = file.name; // 画像ファイル名
-  const bookImageLocation = `book-images/${filename}`; // 画像ファイルのアップロード先
+  
+  const bookImageLocations = [];
   
   const uid = currentUID
   
-  
-  // 書籍データを保存する
-  firebase
-    .storage()
-    .ref(bookImageLocation)
-    .put(file) // Storageへファイルアップロードを実行
-    .then(() => {
-      // Storageへのアップロードに成功したら、Realtime Databaseに書籍データを保存する
-      const bookData = {
-        bookTitle,
-        bookImageLocation,// 複数のロケーション受け取るようにする。
-        uid,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
-      };
-      return firebase
-        .database()
-        .ref('books')
-        .push(bookData);
-    })
+  const promises = [];
+
+  for (var i = 0; i < files.length; i++) {
+    const filename = files[i].name; // 画像ファイル名
+    const bookImageLocation = `book-images/${filename}`; // 画像ファイルのアップロード先
+    promises.push(firebase
+      .storage()
+      .ref(bookImageLocation) // 画像ファイルのアップロード先
+      .put(files[i])
+    );
+    bookImageLocations.push(bookImageLocation);
+  }
+    
+  Promise.all(promises).then(() => {
+    // Storageへのアップロードに成功したら、Realtime Databaseに書籍データを保存する
+    const bookData = {
+      bookTitle,
+      bookImageLocations,// 複数のロケーション受け取るようにする。
+      uid,
+      createdAt: firebase.database.ServerValue.TIMESTAMP,
+    };
+    return firebase
+      .database()
+      .ref('books')
+      .push(bookData);
+  })
     .then(() => {
       // 書籍一覧画面の書籍の登録モーダルを閉じて、初期状態に戻す
       $('#add-book-modal').modal('hide');

@@ -126,14 +126,7 @@
               <div class="col-md-3">写真選択</div>
               <div class="col-md-9">
                 <div class="custom-file">
-                  <input id="add-book-image" type="file" multiple="multiple" accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif"
-                    class="custom-file-input　input_file" required>
-                  <input id="add-book-image" type="file" multiple="multiple" accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif"
-                    class="custom-file-input　input_file">
-                  <input id="add-book-image" type="file" multiple="multiple" accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif"
-                    class="custom-file-input　input_file">
-                  <input id="add-book-image" type="file" multiple="multiple" accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif"
-                    class="custom-file-input　input_file">
+                  <input id="add-book-image" type="file" accept=".jpg, .jpeg, .png" multiple>
                 </div>
               </div>
             </div>
@@ -174,7 +167,7 @@ const firebaseConfig = {
   storageBucket: "realtime-chat-e037f.appspot.com",
 };
 // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
   </script>
 
 
